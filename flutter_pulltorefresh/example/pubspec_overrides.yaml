@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: pull_to_refresh_flutter3
+dependency_overrides:
+  pull_to_refresh_flutter3:
+    path: ..
