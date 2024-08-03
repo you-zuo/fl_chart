@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:common_toolkit/widgets/loading_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
@@ -68,7 +69,7 @@ class _LoadImageState extends State<LoadImage> {
   }
 
   void initCache() {
-    if (widget.width == double.infinity) {
+    /*if (widget.width == double.infinity) {
       cacheWidth = null;
     } else {
       cacheWidth = widget.width?.toInt();
@@ -76,7 +77,7 @@ class _LoadImageState extends State<LoadImage> {
         if (cacheWidth! < 0) {
           cacheWidth = 1;
         }
-        cacheWidth = (cacheWidth ?? 1) * 2;
+        cacheWidth = (cacheWidth ?? 1) * 3;
         if ((cacheWidth!) <= 0) {
           cacheWidth = null;
         }
@@ -87,12 +88,12 @@ class _LoadImageState extends State<LoadImage> {
     } else {
       cacheHeight = widget.height?.toInt();
       if (cacheHeight != null) {
-        cacheHeight = (cacheHeight ?? 1) * 2;
+        cacheHeight = (cacheHeight ?? 1) * 3;
         if ((cacheHeight!) <= 0) {
           cacheHeight = null;
         }
       }
-    }
+    }*/
 
     if (widget.width != null) {
       if (widget.width! < 0) {
@@ -107,7 +108,9 @@ class _LoadImageState extends State<LoadImage> {
   }
 
   Future<void> initImageType() async {
-    if (widget.image == null || widget.image!.isEmpty || widget.image == 'null') {
+    if (widget.image == null ||
+        widget.image!.isEmpty ||
+        widget.image == 'null') {
       imageLoadType = ImageLoadType.loading;
     } else if (widget.image!.contains("http")) {
       widget.image!.replaceAll('http:///', 'http://');
@@ -130,6 +133,8 @@ class _LoadImageState extends State<LoadImage> {
             fit: widget.fit,
             shape: widget.shape,
             color: widget.color,
+            cacheWidth: cacheWidth,
+            cacheHeight: cacheHeight,
             alignment: widget.alignment,
             borderRadius: widget.borderRadius,
             gaplessPlayback: widget.gaplessPlayback,
@@ -144,11 +149,11 @@ class _LoadImageState extends State<LoadImage> {
           shape: widget.shape,
           borderRadius: widget.borderRadius,
           gaplessPlayback: widget.gaplessPlayback,
-
           handleLoadingProgress: true,
           printError: false,
           enableMemoryCache: widget.enableMemoryCache,
-          loadStateChanged: (ExtendedImageState state) => _loadStateChanged(state),
+          loadStateChanged: (ExtendedImageState state) =>
+              _loadStateChanged(state),
         );
       case ImageLoadType.loading:
         return ExtendedImage.asset(
@@ -268,23 +273,7 @@ class _LoadImageState extends State<LoadImage> {
       return state.completedWidget;
     } else {
       if (state.extendedImageLoadState == LoadState.loading) {
-        return Shimmer(
-          duration: Duration(seconds: 2),
-          //Default value
-          interval: Duration(seconds: 0),
-          //Default value: Duration(seconds: 0)
-          color: Colors.white,
-          //Default value
-          colorOpacity: 0.3,
-          //Default value
-          enabled: true,
-          //Default value
-          direction: ShimmerDirection.fromLeftToRight(),
-          //Default Value
-          child: Container(
-            color: widget.loadingBgColor,
-          ),
-        );
+        return const LoadingWidget();
       } else {
         if (widget.urlList != null) {
           return errorStateWidget();
@@ -350,7 +339,8 @@ class _LoadImageState extends State<LoadImage> {
         widget.urlList![newIndex],
         fit: BoxFit.fitWidth,
         width: 234,
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(8), topRight: Radius.circular(8)),
         urlList: widget.urlList,
         urlIndex: newIndex,
       );
