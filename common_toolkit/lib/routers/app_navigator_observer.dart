@@ -15,7 +15,7 @@ class AppNavigatorObserver extends NavigatorObserver {
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     currentRoute = previousRoute?.settings.name ?? '';
-    this.previousRoute = route?.settings.name ?? '';
+    this.previousRoute = route.settings.name ?? '';
     print('didPop: ${route.str}, previousRoute= ${previousRoute?.str}');
   }
 

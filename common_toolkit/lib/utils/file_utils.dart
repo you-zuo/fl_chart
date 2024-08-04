@@ -3,10 +3,11 @@ import 'package:path_provider/path_provider.dart';
 
 class FileUtils {
   ///加载缓存
-  static Future<String> loadCacheSize() async {
+  static Future<String> loadCacheSize(
+      {List<String> excludeList = const []}) async {
     try {
       Directory tempDir = await getTemporaryDirectory();
-      double value = await _getTotalSizeOfFilesInDir(tempDir);
+      double value = await _getTotalSizeOfFilesInDir(tempDir, excludeList);
       return renderSize(value);
     } catch (err) {
       print(err);
@@ -31,17 +32,20 @@ class FileUtils {
 
   /// 递归方式 计算文件的大小
   static Future<double> _getTotalSizeOfFilesInDir(
-      final FileSystemEntity file) async {
+      final FileSystemEntity file, List<String> excludeList) async {
     try {
       if (file is File) {
         int length = await file.length();
         return double.parse(length.toString());
       }
       if (file is Directory) {
+        List<String> pathList = file.path.split('/');
+        String dirName = pathList[pathList.length - 1];
+        if (excludeList.contains(dirName)) return 0;
         final List<FileSystemEntity> children = file.listSync();
         double total = 0;
         for (final FileSystemEntity child in children) {
-          total += await _getTotalSizeOfFilesInDir(child);
+          total += await _getTotalSizeOfFilesInDir(child, excludeList);
         }
         return total;
       }
@@ -53,18 +57,22 @@ class FileUtils {
   }
 
   ///清除缓存
-  static Future<void> clearCache() async {
+  static Future<void> clearCache({List<String> excludeList = const []}) async {
     try {
       Directory tempDir = await getTemporaryDirectory();
-      return _deleteDir(tempDir);
+      return _deleteDir(tempDir, excludeList: excludeList);
     } catch (err) {
       print(err);
     }
   }
 
-  static Future<void> _deleteDir(FileSystemEntity file) async {
+  static Future<void> _deleteDir(FileSystemEntity file,
+      {List<String> excludeList = const []}) async {
     try {
       if (file is Directory) {
+        List<String> pathList = file.path.split('/');
+        String dirName = pathList[pathList.length - 1];
+        if (excludeList.contains(dirName)) return;
         final List<FileSystemEntity> children = file.listSync();
         for (final FileSystemEntity child in children) {
           await _deleteDir(child);

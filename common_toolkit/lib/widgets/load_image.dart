@@ -312,7 +312,6 @@ class _LoadImageState extends State<LoadImage> {
   }
 
   String getImgPath(String name) {
-    print('namename$name');
     String src = name.replaceAll(' ', '');
     if (src.contains('.')) {
       if (src.contains('assets')) {
