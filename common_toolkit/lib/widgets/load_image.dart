@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:common_toolkit/widgets/loading_widget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
-enum ImageLoadType { assets, net, loading, fail }
+enum ImageLoadType { assets, net, loading, fail, file }
 
 class LoadImage extends StatefulWidget {
   LoadImage(this.image,
@@ -117,8 +118,10 @@ class _LoadImageState extends State<LoadImage> {
       widget.image!.replaceAll('https:///', 'https://');
 
       imageLoadType = ImageLoadType.net;
-    } else {
+    } else if (widget.image?.contains('assets') ?? false) {
       imageLoadType = ImageLoadType.assets;
+    } else {
+      imageLoadType = ImageLoadType.file;
     }
 
     setState(() {});
@@ -126,6 +129,19 @@ class _LoadImageState extends State<LoadImage> {
 
   Widget _imgWidget() {
     switch (imageLoadType) {
+      case ImageLoadType.file:
+        return ExtendedImage.file(File(widget.image!),
+            width: widget.width?.abs(),
+            height: widget.height?.abs(),
+            fit: widget.fit,
+            shape: widget.shape,
+            color: widget.color,
+            cacheWidth: cacheWidth,
+            cacheHeight: cacheHeight,
+            alignment: widget.alignment,
+            borderRadius: widget.borderRadius,
+            gaplessPlayback: widget.gaplessPlayback,
+            enableMemoryCache: widget.enableMemoryCache);
       case ImageLoadType.assets:
         return ExtendedImage.asset(getImgPath(widget.image!),
             width: widget.width?.abs(),
@@ -296,6 +312,7 @@ class _LoadImageState extends State<LoadImage> {
   }
 
   String getImgPath(String name) {
+    print('namename$name');
     String src = name.replaceAll(' ', '');
     if (src.contains('.')) {
       if (src.contains('assets')) {
