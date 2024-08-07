@@ -13,7 +13,7 @@ class EmptyWidget extends StatelessWidget {
         child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Lottie.asset('assets/lottie/empty_view.json',
+        Lottie.asset('assets/lottie/empty.json',
             width: 100, height: 100, package: CommonConstants.packageName),
         Text(
           text,
