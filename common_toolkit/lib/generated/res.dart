@@ -2,6 +2,7 @@
 class R {
   R._();
 
-  static const String lottieEmptyView = 'assets/lottie/empty_view.json';
+  static const String lottieEmpty = 'assets/lottie/empty.json';
+  static const String lottieLoading = 'assets/lottie/loading.json';
 
 }

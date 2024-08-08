@@ -11,7 +11,7 @@ class LoadingWidget extends StatelessWidget {
     return Center(
         child: Lottie.asset(
       'assets/lottie/loading.json',
-      width: 40,
+      width: 125,
       package: CommonConstants.packageName,
     ) /*LoadingAnimationWidget.horizontalRotatingDots(color: Colors.greenAccent, size: 40)*/);
   }
