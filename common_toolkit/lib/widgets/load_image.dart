@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:common_toolkit/widgets/loading_widget.dart';
 import 'package:extended_image/extended_image.dart';
@@ -129,7 +128,7 @@ class _LoadImageState extends State<LoadImage> {
 
   Widget _imgWidget() {
     switch (imageLoadType) {
-      case ImageLoadType.file:
+/*      case ImageLoadType.file:
         return ExtendedImage.file(File(widget.image!),
             width: widget.width?.abs(),
             height: widget.height?.abs(),
@@ -141,7 +140,7 @@ class _LoadImageState extends State<LoadImage> {
             alignment: widget.alignment,
             borderRadius: widget.borderRadius,
             gaplessPlayback: widget.gaplessPlayback,
-            enableMemoryCache: widget.enableMemoryCache);
+            enableMemoryCache: widget.enableMemoryCache);*/
       case ImageLoadType.assets:
         return ExtendedImage.asset(getImgPath(widget.image!),
             width: widget.width?.abs(),

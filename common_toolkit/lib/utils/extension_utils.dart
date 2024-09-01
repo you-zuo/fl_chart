@@ -58,14 +58,18 @@ extension DoubleExtension on double {
 
 extension StringExtension on String {
   bool get isEmail {
-    return RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(this);
+    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(this);
   }
 }
 
 extension StringExtension2 on String? {
   bool get isNullOrEmpty {
     return this == null || this == "";
+  }
+}
+
+extension WidgetExtension on Widget {
+  SliverToBoxAdapter get toSliver {
+    return SliverToBoxAdapter(child: this);
   }
 }
